@@ -12,7 +12,8 @@ class CheckSectionNameUseCase(
 
     override suspend fun invoke(sportSection: SportSection): Boolean {
         val sectionDetails = sportSection
-        if (sectionDetails.sectionName.isEmpty()) {
+        if (sectionDetails.sectionName.isEmpty()||
+            sectionDetails.sectionInfo.isEmpty()) {
             return false
         } else {
             return true

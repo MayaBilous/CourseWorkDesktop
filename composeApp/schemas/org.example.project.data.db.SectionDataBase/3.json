@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "54e678f14831be3e6e5d20df13400297",
+    "identityHash": "2fe6c00909bb9e876b612cb463d3198b",
     "entities": [
       {
         "tableName": "DbSportSection",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `sectionName` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `sectionName` TEXT NOT NULL, `sectionInfo` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -16,6 +16,12 @@
           {
             "fieldPath": "sectionName",
             "columnName": "sectionName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sectionInfo",
+            "columnName": "sectionInfo",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -117,7 +123,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '54e678f14831be3e6e5d20df13400297')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2fe6c00909bb9e876b612cb463d3198b')"
     ]
   }
 }

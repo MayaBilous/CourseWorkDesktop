@@ -67,6 +67,7 @@ class DetailsSportsSectionsViewModel(
                     )
 
                     is SectionDetailsUserIntent.UpdateSection -> updateSportSection(intent.sportSection)
+                    is SectionDetailsUserIntent.ChangeSectionInfo -> changeSectionInfo(sectionInfo = intent.sectionInfo)
                 }
             }
         }
@@ -105,6 +106,14 @@ class DetailsSportsSectionsViewModel(
         _state.emit(
             state.value.copy(
                 sportSection = _state.value.sportSection.copy(sectionName = sectionName)
+            )
+        )
+    }
+
+    private suspend fun changeSectionInfo(sectionInfo: String) {
+        _state.emit(
+            state.value.copy(
+                sportSection = _state.value.sportSection.copy(sectionInfo = sectionInfo)
             )
         )
     }
@@ -148,6 +157,7 @@ class DetailsSportsSectionsViewModel(
 
     sealed interface SectionDetailsUserIntent {
         data class ChangeSectionName(val sectionName: String) : SectionDetailsUserIntent
+        data class ChangeSectionInfo(val sectionInfo: String) : SectionDetailsUserIntent
         data class AddSportSection(val sportSection: SportSection) : SectionDetailsUserIntent
         data object NavigateToSectionList : SectionDetailsUserIntent
         data class NavigateToClub(

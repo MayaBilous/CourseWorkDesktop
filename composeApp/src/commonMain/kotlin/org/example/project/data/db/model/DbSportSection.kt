@@ -10,4 +10,7 @@ data class DbSportSection(
     val id: Long?,
     @ColumnInfo(name = "sectionName")
     val sectionName: String,
+    @ColumnInfo(name = "sectionInfo")
+    val sectionInfo: String,
+
 )

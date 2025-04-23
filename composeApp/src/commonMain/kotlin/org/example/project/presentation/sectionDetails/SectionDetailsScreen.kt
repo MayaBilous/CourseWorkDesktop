@@ -1,6 +1,7 @@
 package org.example.project.presentation.sectionDetails
 
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,14 +9,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -32,13 +33,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import kotlinproject.composeapp.generated.resources.Res
+import kotlinproject.composeapp.generated.resources.city
+import kotlinproject.composeapp.generated.resources.sport
+import kotlinx.coroutines.flow.collectLatest
 import org.example.project.presentation.ShowDialog
 import org.example.project.presentation.root.ClubNavigation
 import org.example.project.presentation.root.SectionsListNavigation
 import org.example.project.presentation.sectionDetails.mvi.DetailsSportsSectionsViewModel
 import org.example.project.presentation.sectionDetails.mvi.DetailsSportsSectionsViewModel.SectionDetailsEvent
 import org.example.project.presentation.sectionDetails.mvi.DetailsSportsSectionsViewModel.SectionDetailsUserIntent
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SectionDetailsScreen(
@@ -88,6 +92,14 @@ fun SectionDetailsScreen(
 
     ) {
 
+        if (!state.isAddingItem){
+        Image(
+            org.jetbrains.compose.resources.painterResource(Res.drawable.city),
+            contentDescription = "city",
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+    }
+
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -103,6 +115,7 @@ fun SectionDetailsScreen(
                     focusedLabelColor = Color.Black,
                     unfocusedLabelColor = Color.Black,
                     unfocusedIndicatorColor = Color.Black,
+                    disabledIndicatorColor = Color.Black,
                     cursorColor = Color.Black,
                     disabledTextColor = Color.Black
                 ),
@@ -114,6 +127,33 @@ fun SectionDetailsScreen(
                 enabled = state.isAdmin,
                 label = { Text("назва") }
             )
+            if (state.isAdmin) {
+                TextField(
+                    state.sportSection.sectionInfo,
+                    onValueChange = {
+                        viewModel.process(
+                            SectionDetailsUserIntent.ChangeSectionInfo(
+                                it
+                            )
+                        )
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        focusedLabelColor = Color.Black,
+                        unfocusedLabelColor = Color.Black,
+                        unfocusedIndicatorColor = Color.Black,
+                        disabledIndicatorColor = Color.Black,
+                        cursorColor = Color.Black,
+                        disabledTextColor = Color.Black
+                    ),
+                    textStyle = TextStyle(
+                        fontSize = 15.sp,
+                    ),
+                    enabled = state.isAdmin,
+                    label = { Text("інформація") }
+                )
+            }
         }
 
         if (!state.isAddingItem) {
@@ -160,7 +200,8 @@ fun SectionDetailsScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
 
-                    Text(text = item.address,
+                    Text(
+                        text = item.address,
                         modifier = Modifier
                             .clickable {
                                 viewModel.process(

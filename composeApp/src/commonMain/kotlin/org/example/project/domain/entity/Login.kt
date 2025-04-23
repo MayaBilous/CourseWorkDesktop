@@ -8,8 +8,8 @@ data class Login(
 
     companion object {
         val default = Login(
-            userName = "user",
-            password = "321",
+            userName = "тренер",
+            password = "123",
             isAdmin = false,
         )
     }

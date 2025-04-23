@@ -14,6 +14,7 @@ class SportSectionMapper {
         return SportSection(
             id = dbSectionWithDetails.sportSection.id,
             sectionName = dbSectionWithDetails.sportSection.sectionName,
+            sectionInfo = dbSectionWithDetails.sportSection.sectionInfo,
             sectionDetails = dbSectionWithDetails.sectionDetails.map {
                 SectionDetails(
                     detailsId = it.id,
@@ -32,7 +33,8 @@ class SportSectionMapper {
         return DbSectionWithDetails(
             sportSection = DbSportSection(
                 id = sportSection.id,
-                sectionName = sportSection.sectionName
+                sectionName = sportSection.sectionName,
+                sectionInfo = sportSection.sectionInfo,
             ),
             sectionDetails = sportSection.sectionDetails.map {
                 DbSectionDetails(
@@ -51,7 +53,8 @@ class SportSectionMapper {
     fun mapSectionToDb(sportSection: SportSection): DbSportSection {
         return DbSportSection(
             id = sportSection.id,
-            sectionName = sportSection.sectionName
+            sectionName = sportSection.sectionName,
+            sectionInfo = sportSection.sectionInfo,
         )
     }
 

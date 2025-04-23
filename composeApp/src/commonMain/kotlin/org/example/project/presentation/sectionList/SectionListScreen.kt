@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,10 +20,14 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +38,7 @@ import androidx.navigation.NavController
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.sport
 import kotlinx.coroutines.flow.collectLatest
+import org.example.project.presentation.ShowDialog
 import org.example.project.presentation.root.AuthNavigation
 import org.example.project.presentation.root.SectionDetailsNavigation
 import org.example.project.presentation.sectionList.mvi.SectionListViewModel
@@ -50,6 +56,8 @@ fun SectionListScreen(
 ) {
 
     val state by viewModel.state.collectAsState()
+    var showDialog by remember { mutableStateOf(false) }
+    var dialogText by remember { mutableStateOf("") }
 
     LaunchedEffect(viewModel.event) {
         viewModel.event.collectLatest { event ->
@@ -67,6 +75,10 @@ fun SectionListScreen(
                 )
             }
         }
+    }
+
+    if (showDialog) {
+        ShowDialog(text = dialogText, onDismiss = { showDialog = false })
     }
 
     Column(
@@ -124,12 +136,27 @@ fun SectionListScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
 
-                    Text(
-                        text = item.sectionName,
-                        modifier = Modifier
-                            .clickable {
-                                viewModel.process(NavigateToSectionDetails(item.id ?: 0, false))
-                            })
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Default.Info, "",
+                            modifier = Modifier
+                                .clickable {
+                                    showDialog = true
+                                    dialogText = item.sectionInfo
+
+                                })
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Text(
+                            text = item.sectionName,
+                            modifier = Modifier
+                                .clickable {
+                                    viewModel.process(NavigateToSectionDetails(item.id ?: 0, false))
+                                })
+                    }
 
                     if (state.isAdmin) {
                         Icon(
